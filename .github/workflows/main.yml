@@ -19,11 +19,6 @@ jobs:
       - name: Install dependencies
         run: npm ci --include=dev
 
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - run: ls node_modules/.bin | grep opennext || true
-
       - name: Build & Deploy (OpenNext)
         run: npm run deploy
         env:
