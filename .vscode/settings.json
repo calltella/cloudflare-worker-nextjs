@@ -1,5 +1,41 @@
 {
-	"files.associations": {
-		"wrangler.json": "jsonc"
-	}
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  // prisma
+  "prisma.enableDiagnostics": false,
+  "prisma.enableCodeLens": false,
+  // Prettier（保存時の自動整形を止める）JS/TS だけ有効にする
+  "editor.formatOnSave": false,
+  "editor.defaultFormatter": null,
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.formatOnSave": false
+  },
+  // Markdown Preview Enhanced
+  "markdown-preview-enhanced.enableScriptExecution": false,
+  // Remote Containers
+  "remote.autoForwardPorts": false,
+  "remote.restoreForwardedPorts": false,
+  // ファイル監視を抑制（Docker/Nodeで効果大）
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.git/**": true,
+    "**/.wrangler/**": true,
+    "**/dist/**": true
+  },
+  // 検索インデックスを軽量化
+  "search.followSymlinks": false,
+  // ミニマップ無効
+  "editor.minimap.enabled": false,
+  // パンくず無効
+  "breadcrumbs.enabled": false,
+  "files.associations": {
+    "wrangler.json": "jsonc"
+  }
 }

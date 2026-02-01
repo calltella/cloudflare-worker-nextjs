@@ -6,7 +6,7 @@ declare namespace Cloudflare {
 		IMAGES: ImagesBinding;
 		ASSETS: Fetcher;
 		NEXTJS_ENV: string;
-		WORKER_SELF_REFERENCE: Fetcher /* my-next-app */;
+		WORKER_SELF_REFERENCE: Fetcher /* nextjs-worker */;
 	}
 }
 interface CloudflareEnv extends Cloudflare.Env {}
