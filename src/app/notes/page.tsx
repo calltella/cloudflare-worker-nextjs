@@ -16,7 +16,12 @@ async function getNotes(): Promise<Notes[]> {
       ? 'http://hono-api:8787'
       : process.env.API_BASE_URL!;
 
-  const res = await fetch(`${base}/api/notes`, { cache: 'no-store' })
+  const res = await fetch(`${base}/api/notes`, {
+    cache: 'no-store',
+    headers: {
+      accept: "application/json",
+    },
+  })
 
   if (!res.ok) {
     console.error("Fetch notes failed", {
