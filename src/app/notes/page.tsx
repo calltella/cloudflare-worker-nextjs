@@ -11,10 +11,18 @@ type Notes = {
 
 async function getNotes(): Promise<Notes[]> {
 
-  const base = process.env.API_BASE_URL ?? 'http://hono-api:8787'
+  const base =
+    process.env.NODE_ENV === 'development'
+      ? 'http://hono-api:8787'
+      : process.env.API_BASE_URL!;
+
   const res = await fetch(`${base}/api/notes`, { cache: 'no-store' })
 
   if (!res.ok) {
+    console.error("Fetch notes failed", {
+      url: `${base}/api/notes`,
+      status: res.status,
+    });
     throw new Error("Failed to fetch users");
   }
 
