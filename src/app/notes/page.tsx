@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+// app/page.tsx (または該当のサーバーコンポーネント)
 import { headers } from "next/headers";
 
 type Result = {
@@ -6,25 +6,18 @@ type Result = {
   sum: number;
 };
 
+// ※ 相対パスでOK。環境に依存せず動く
 async function getData(): Promise<Result> {
-  const h = await headers(); // ← await が必須
-  const host = h.get("host");
+  // headers() は同期
+  const _h = headers(); // 必要ならここで User-Agent 等を読む
 
-  if (!host) {
-    throw new Error("Host header not found");
-  }
-
-  const url = `https://${host}/api/worker-b`;
-
-  const res = await fetch(url, { cache: "no-store" });
-
+  const res = await fetch("/api/worker-b", { cache: "no-store" });
   if (!res.ok) {
-    throw new Error("Failed to fetch worker-b");
+    // エラーログだけして、後段でフェイルセーフにするのが◎
+    throw new Error(`Failed to fetch /api/worker-b: ${res.status} ${res.statusText}`);
   }
-
   return res.json();
 }
-
 
 export default async function Page() {
   try {
@@ -44,4 +37,3 @@ export default async function Page() {
     );
   }
 }
-
