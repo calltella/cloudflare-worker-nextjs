@@ -1,8 +1,7 @@
-// /app/src/app/notes/page.tsx
-import { utcFormatDateTimeWithDay } from "@/lib/date"
-import { createNote } from "./actions"
-
 export const dynamic = "force-dynamic";
+
+import { utcFormatDateTimeWithDay } from "@/lib/date";
+import { createNote } from "./actions";
 
 type Note = {
   id: number;
@@ -11,11 +10,20 @@ type Note = {
   createdAt: string;
 };
 
-type Env = {
-  API: Fetcher;
-};
+// OpenNext が注入する実行時 Env
+function getEnv() {
+  return (globalThis as any).__OPEN_NEXT_ENV__ as {
+    API: Fetcher;
+  };
+}
 
-export async function getNotes(env: Env): Promise<Note[]> {
+export async function getNotes(): Promise<Note[]> {
+  const env = getEnv();
+
+  if (!env?.API) {
+    throw new Error("Service Binding API is not available");
+  }
+
   const res = await env.API.fetch("/api/notes", {
     headers: {
       accept: "application/json",
@@ -31,41 +39,32 @@ export async function getNotes(env: Env): Promise<Note[]> {
   return res.json() as Promise<Note[]>;
 }
 
-export default async function UsersPage() {
-  const notes = await getNotes(process.env as any);
+export default async function NotesPage() {
+  const notes = await getNotes();
 
   return (
     <main className="mx-auto max-w-3xl p-6">
       <h1 className="mb-6 text-2xl font-bold">Notes</h1>
 
-      {/* ノート作成フォーム */}
       <form action={createNote} className="mb-8 space-y-4">
-        <div>
-          <input
-            type="text"
-            name="title"
-            placeholder="タイトル"
-            required
-            className="w-full rounded border p-2"
-          />
-        </div>
-        <div>
-          <textarea
-            name="content"
-            placeholder="内容"
-            rows={4}
-            className="w-full rounded border p-2"
-          />
-        </div>
-        <button
-          type="submit"
-          className="rounded bg-black px-4 py-2 text-white hover:opacity-80"
-        >
+        <input
+          type="text"
+          name="title"
+          placeholder="タイトル"
+          required
+          className="w-full rounded border p-2"
+        />
+        <textarea
+          name="content"
+          placeholder="内容"
+          rows={4}
+          className="w-full rounded border p-2"
+        />
+        <button className="rounded bg-black px-4 py-2 text-white">
           登録
         </button>
       </form>
 
-      {/* ノート一覧 */}
       {notes.length === 0 ? (
         <p className="text-gray-500">ノートがありません</p>
       ) : (
@@ -73,7 +72,7 @@ export default async function UsersPage() {
           {notes.map((note) => (
             <li key={note.id} className="rounded border p-4">
               <h2 className="font-semibold">{note.title}</h2>
-              <p className="mt-2 text-gray-700">{note.content}</p>
+              <p className="mt-2">{note.content}</p>
               <p className="mt-2 text-xs text-gray-400">
                 {utcFormatDateTimeWithDay(note.createdAt)}
               </p>
