@@ -3,7 +3,7 @@ import type { API } from "@/types";
 
 export const runtime = "edge";
 
-export async function GET(request: Request) {
+export default async function GET(request: Request) {
   // Service Binding はここでのみ取得可能
   const api = (globalThis as any).API as API | undefined;
 
