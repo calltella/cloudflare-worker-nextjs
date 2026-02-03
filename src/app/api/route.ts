@@ -1,18 +1,14 @@
+// app/api/hello/route.ts
 import { NextResponse } from "next/server";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import type { API } from "@/types";
 
-export const runtime = "edge";
+// runtime = "edge" は削除（open-next では Node runtime が推奨）
 
 export default async function GET(request: Request) {
-  // Service Binding はここでのみ取得可能
-  const api = (globalThis as any).API as API | undefined;
-
-  if (!api) {
-    return NextResponse.json(
-      { error: "Service Binding API is not available" },
-      { status: 500 },
-    );
-  }
+  const { env } = await getCloudflareContext({ async: true });
+  // unknown を経由してキャスト
+  const api = env.API as unknown as API;
 
   // WorkerEntrypoint.fetch
   const res = await api.fetch(
@@ -20,7 +16,6 @@ export default async function GET(request: Request) {
       method: "GET",
     }),
   );
-
   const text = await res.text();
 
   // RPC 呼び出し
