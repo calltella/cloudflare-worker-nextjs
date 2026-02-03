@@ -10,24 +10,21 @@ type Note = {
   createdAt: string;
 };
 
-// OpenNext が注入する実行時 Env
-function getEnv() {
-  return (globalThis as any).__OPEN_NEXT_ENV__ as {
-    API: Fetcher;
-  };
-}
+function getAPI(): Fetcher {
+  const api = (globalThis as any).API as Fetcher | undefined;
 
-export async function getNotes(): Promise<Note[]> {
-  const env = getEnv();
-
-  if (!env?.API) {
+  if (!api) {
     throw new Error("Service Binding API is not available");
   }
 
-  const res = await env.API.fetch("/api/notes", {
-    headers: {
-      accept: "application/json",
-    },
+  return api;
+}
+
+export async function getNotes(): Promise<Note[]> {
+  const api = getAPI();
+
+  const res = await api.fetch("/api/notes", {
+    headers: { accept: "application/json" },
     cache: "no-store",
   });
 
