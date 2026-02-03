@@ -22,7 +22,7 @@ async function getData(): Promise<Result> {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch worker-b");
+    throw new Error(`"Failed to fetch worker-b" ${url}`);
   }
 
   return res.json();
