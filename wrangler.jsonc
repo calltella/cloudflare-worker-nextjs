@@ -30,6 +30,11 @@
       // see https://opennext.js.org/cloudflare/caching
       "binding": "WORKER_SELF_REFERENCE",
       "service": "nextjs-worker"
+    },
+    {
+      // 
+      "binding": "API",
+      "service": "app"
     }
   ],
   "observability": {

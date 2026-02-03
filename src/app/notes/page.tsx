@@ -2,41 +2,35 @@
 import { utcFormatDateTimeWithDay } from "@/lib/date"
 import { createNote } from "./actions"
 
-type Notes = {
+type Note = {
   id: number;
   title: string;
   content: string;
   createdAt: string;
 };
 
-async function getNotes(): Promise<Notes[]> {
+type Env = {
+  API: Fetcher;
+};
 
-  const base =
-    process.env.NODE_ENV === 'development'
-      ? 'http://hono-api:8787'
-      : process.env.API_BASE_URL!;
-
-  const res = await fetch(`${base}/api/notes`, {
-    cache: 'no-store',
+export async function getNotes(env: Env): Promise<Note[]> {
+  const res = await env.API.fetch("/api/notes", {
     headers: {
       accept: "application/json",
     },
-  })
+    cache: "no-store",
+  });
 
   if (!res.ok) {
-    console.error("Fetch notes failed", {
-      url: `${base}/api/notes`,
-      status: res.status,
-    });
-    throw new Error("Failed to fetch users");
+    const text = await res.text();
+    throw new Error(`Failed to fetch notes: ${text}`);
   }
 
-  console.log(`res: ${res}`)
-  return res.json();
+  return res.json() as Promise<Note[]>;
 }
 
 export default async function UsersPage() {
-  const notes = await getNotes();
+  const notes = await getNotes(process.env as any);
 
   return (
     <main className="mx-auto max-w-3xl p-6">
