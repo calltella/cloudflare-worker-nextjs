@@ -1,6 +1,4 @@
 // app/notes/page.tsx
-"use client;"
-export const runtime = "edge";
-export default function Page() {
+export default async function UsersPage() {
   return <main><p>/notes minimal OK</p></main>;
 }
