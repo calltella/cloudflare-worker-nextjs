@@ -2,6 +2,8 @@
 import { utcFormatDateTimeWithDay } from "@/lib/date"
 import { createNote } from "./actions"
 
+export const dynamic = "force-dynamic";
+
 type Note = {
   id: number;
   title: string;
