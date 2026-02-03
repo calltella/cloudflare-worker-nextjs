@@ -26,13 +26,14 @@
   },
   "services": [
     {
+      // セルフバインディング
       // Self-reference service binding, the service name must match the worker name
       // see https://opennext.js.org/cloudflare/caching
       "binding": "WORKER_SELF_REFERENCE",
       "service": "nextjs-worker"
     },
     {
-      // 
+      // サービスバインディング
       "binding": "API",
       "service": "app"
     }
