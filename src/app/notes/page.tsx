@@ -7,6 +7,7 @@ type Result = {
 
 export const dynamic = "force-dynamic";
 
+console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`)
 async function getData(): Promise<Result> {
   const h = await headers();
   const host = h.get("host");
