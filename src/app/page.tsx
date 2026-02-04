@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export default function Home() {
-  console.log(`${process.env.API_BASE_URL}`)
+  console.log(`process.env.API_BASE_URL: ${process.env.API_BASE_URL}`)
   return (
     <main className="min-h-screen flex flex-col items-center">
       <Link
